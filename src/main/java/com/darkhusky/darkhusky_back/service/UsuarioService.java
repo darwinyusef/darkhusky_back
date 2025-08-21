@@ -1,0 +1,31 @@
+package com.darkhusky.darkhusky_back.service;
+
+import com.darkhusky.darkhusky_back.entity.UsuarioEntity;
+import com.darkhusky.darkhusky_back.entity.repository.UsuarioRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.Optional;
+
+import static java.util.Locale.filter;
+
+@Service
+public class UsuarioService {
+
+    private final UsuarioRepository usuarioRepository;
+
+    @Autowired
+    public UsuarioService(UsuarioRepository usuarioRepository) {
+        this.usuarioRepository = usuarioRepository;
+    }
+
+    public UsuarioEntity registro (UsuarioEntity usuario){
+        return usuarioRepository.save(usuario);
+    }
+
+    public Optional<UsuarioEntity> login (String email, String password){
+        return usuarioRepository.findByEmail(email).filter(u -> u.getPassword().equals(password));
+    }
+
+
+}
