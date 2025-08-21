@@ -25,7 +25,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody UsuarioEntity loginRequest) {
-        return userService.login(loginRequest.getEmail(), loginRequest.getPassword())
+        return userService.login(loginRequest.getEmail(), loginRequest.getPasswordHash())
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.status(401).build());
     }

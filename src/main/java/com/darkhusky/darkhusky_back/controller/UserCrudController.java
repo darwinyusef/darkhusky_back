@@ -44,7 +44,7 @@ public class UserCrudController {
         return usuarioRepository.findById(id)
                 .map(user -> {
                     user.setEmail(newUser.getEmail());
-                    user.setPassword(newUser.getPassword());
+                    user.setPasswordHash(newUser.getPasswordHash());
                     return ResponseEntity.ok(usuarioRepository.save(user));
                 })
                 .orElse(ResponseEntity.notFound().build());
