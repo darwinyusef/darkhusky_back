@@ -1,0 +1,112 @@
+-- ==============================
+-- 1. Tabla Usuarios (Dueño + Login)
+-- ==============================
+CREATE TABLE users (
+    user_id SERIAL PRIMARY KEY,
+    
+    -- Autenticación
+    username VARCHAR(50) UNIQUE NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password_hash TEXT NOT NULL,
+    is_active BOOLEAN DEFAULT FALSE,
+    role VARCHAR(20) DEFAULT 'OWNER', -- OWNER, ADMIN, VET, etc.
+
+    -- Información personal
+    full_name VARCHAR(100) NOT NULL,
+    phone VARCHAR(20),
+    address TEXT,
+    emergency_contact VARCHAR(100),
+    emergency_phone VARCHAR(20),
+
+    -- Auditoría
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- ==============================
+-- 2. Tabla Mascotas
+-- ==============================
+CREATE TABLE pets (
+    pet_id SERIAL PRIMARY KEY,
+    user_id INT NOT NULL,             -- Relación con el dueño
+    name VARCHAR(100) NOT NULL,
+    species VARCHAR(50),              -- Perro, Gato, etc.
+    breed VARCHAR(100),
+    age VARCHAR(50),
+    weight VARCHAR(50),
+    gender VARCHAR(20),
+    color VARCHAR(50),
+    microchip VARCHAR(50) UNIQUE,
+    photo TEXT,
+    qr_code VARCHAR(100) UNIQUE,      -- Código para generar QR
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
+);
+
+-- ==============================
+-- 3. Información Médica
+-- ==============================
+CREATE TABLE medical_records (
+    medical_id SERIAL PRIMARY KEY,
+    pet_id INT NOT NULL,
+    vaccinated BOOLEAN DEFAULT FALSE,
+    last_vaccine DATE,
+    next_vaccine DATE,
+    allergies TEXT,
+    medications TEXT,
+    vet_name VARCHAR(100),
+    vet_phone VARCHAR(20),
+    medical_notes TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (pet_id) REFERENCES pets(pet_id) ON DELETE CASCADE
+);
+
+-- ==============================
+-- 4. Alimentación
+-- ==============================
+CREATE TABLE feeding (
+    feeding_id SERIAL PRIMARY KEY,
+    pet_id INT NOT NULL,
+    brand VARCHAR(100),
+    schedule VARCHAR(100),
+    special_diet TEXT,
+    treats TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (pet_id) REFERENCES pets(pet_id) ON DELETE CASCADE
+);
+
+-- ==============================
+-- 5. Recordatorios
+-- ==============================
+CREATE TABLE reminders (
+    reminder_id SERIAL PRIMARY KEY,
+    pet_id INT NOT NULL,
+    type VARCHAR(50),                 -- Vacuna, Desparasitación, Chequeo
+    description TEXT,
+    due_date DATE,
+    priority VARCHAR(20),             -- high, medium, low
+    completed BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (pet_id) REFERENCES pets(pet_id) ON DELETE CASCADE
+);
+
+-- ==============================
+-- 6. Mascotas Perdidas
+-- ==============================
+CREATE TABLE lost_pets (
+    lost_id SERIAL PRIMARY KEY,
+    pet_id INT NOT NULL,
+    location TEXT,
+    date_lost DATE,
+    reward VARCHAR(50),
+    contact VARCHAR(50),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (pet_id) REFERENCES pets(pet_id) ON DELETE CASCADE
+);
