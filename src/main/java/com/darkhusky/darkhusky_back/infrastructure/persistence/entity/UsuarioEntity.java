@@ -1,36 +1,31 @@
-package com.darkhusky.darkhusky_back.entity;
+package com.darkhusky.darkhusky_back.infrastructure.persistence.entity;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "users")
 public class UsuarioEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id",nullable = false)
-    private Long userId;
+    private Long id;
 
-    @Column(length = 50,nullable = false)
+    @Column(length = 50, nullable = false)
     private String username;
 
-    @Column(length = 100,nullable = false)
+    @Column(length = 100, nullable = false)
     private String email;
 
-    @Column(name = "password_hash",nullable = false)
+    @Column(name = "password_hash", nullable = false)
     private String passwordHash;
 
     @Column(name = "is_active")
-    @JsonProperty("isActive")
     private Boolean isActive = false;
 
     @Column(length = 20)
     private String role;
 
-    @Column(name = "full_name",length = 100,nullable = false)
+    @Column(name = "full_name", length = 100, nullable = false)
     private String fullName;
 
     @Column(length = 20)
@@ -38,10 +33,10 @@ public class UsuarioEntity {
 
     private String address;
 
-    @Column(name = "emergency_contact",length = 100)
+    @Column(name = "emergency_contact", length = 100)
     private String emergencyContact;
 
-    @Column(name = "emergency_phone",length = 20)
+    @Column(name = "emergency_phone", length = 20)
     private String emergencyPhone;
 
     @Column(name = "created_at")
@@ -50,12 +45,10 @@ public class UsuarioEntity {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt = LocalDateTime.now();
 
-    /*// Relación con mascotas
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<PetEntity> pets;*/
+    public UsuarioEntity() {}
 
-    public UsuarioEntity(Long userId, String username, String email, String passwordHash, Boolean isActive, String role, String fullName, String phone, String address, String emergencyContact, String emergencyPhone, LocalDateTime createdAt, LocalDateTime updatedAt/*, List<PetEntity> pets*/) {
-        this.userId = userId;
+    public UsuarioEntity(Long id, String username, String email, String passwordHash, Boolean isActive, String role, String fullName, String phone, String address, String emergencyContact, String emergencyPhone, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.id = id;
         this.username = username;
         this.email = email;
         this.passwordHash = passwordHash;
@@ -68,18 +61,14 @@ public class UsuarioEntity {
         this.emergencyPhone = emergencyPhone;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
-        /*this.pets = pets;*/
     }
 
-    public UsuarioEntity() {
+    public Long getId() {
+        return id;
     }
 
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getUsername() {
@@ -178,11 +167,4 @@ public class UsuarioEntity {
         this.updatedAt = updatedAt;
     }
 
-    /*public List<PetEntity> getPets() {
-        return pets;
-    }
-
-    public void setPets(List<PetEntity> pets) {
-        this.pets = pets;
-    }*/
 }

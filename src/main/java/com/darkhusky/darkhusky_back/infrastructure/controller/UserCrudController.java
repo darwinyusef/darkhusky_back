@@ -1,9 +1,11 @@
-package com.darkhusky.darkhusky_back.controller;
+package com.darkhusky.darkhusky_back.infrastructure.controller;
 
-import com.darkhusky.darkhusky_back.entity.UsuarioEntity;
-import com.darkhusky.darkhusky_back.entity.repository.UsuarioRepository;
-import com.darkhusky.darkhusky_back.service.UsuarioService;
+import com.darkhusky.darkhusky_back.application.service.UsuarioService;
+import com.darkhusky.darkhusky_back.domain.repository.UsuarioRepository;
+import com.darkhusky.darkhusky_back.infrastructure.persistence.entity.UsuarioEntity;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,19 +25,24 @@ public class UserCrudController {
         this.usuarioService = usuarioService;
     }
 
+    @Value("${INFO}")
+    private String algo;
+
+    @GetMapping("/valor")
+    public String getValor() {
+        return "El valor de algo es: " + algo;
+    }
+
     @GetMapping
     public ResponseEntity<List<UsuarioEntity>> getAllUsers() {
-        return ResponseEntity.ok(usuarioRepository.findAll());
+        return ResponseEntity.ok(usuarioService.getAllUsers());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getUserById(@PathVariable Long id) {
-        Optional<UsuarioEntity> user = usuarioRepository.findById(id);
-        if (user.isPresent()) {
-            return ResponseEntity.status(HttpStatus.OK).body(user.get());
-        }else {
-            return ResponseEntity.status(404).body("Usuario no encontrado");
-        }
+        return usuarioService.getUserById(id)
+                .map(usuario -> ResponseEntity.ok(usuario))
+                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado"));
     }
 
     // Actualizar usuario

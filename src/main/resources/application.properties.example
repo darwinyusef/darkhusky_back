@@ -1,0 +1,16 @@
+spring.application.name=darkhusky_back
+server.port=8081
+
+# BASE DE DATOS POSTGRESQL
+
+# Configuracion de PostgreSQL 
+spring.datasource.url=${POSTGRES_KEY}
+spring.datasource.username=${USERNAME}
+spring.datasource.password=${PASSWORD}
+spring.datasource.driver-class-name=org.postgresql.Driver
+
+# JPA / Hibernate
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
+spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect

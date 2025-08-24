@@ -1,7 +1,8 @@
-package com.darkhusky.darkhusky_back.controller;
+package com.darkhusky.darkhusky_back.infrastructure.controller;
 
-import com.darkhusky.darkhusky_back.entity.UsuarioEntity;
-import com.darkhusky.darkhusky_back.service.UsuarioService;
+import com.darkhusky.darkhusky_back.application.service.UsuarioService;
+import com.darkhusky.darkhusky_back.domain.entity.UsuarioEntity;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
